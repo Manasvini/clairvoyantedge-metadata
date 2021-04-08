@@ -9,7 +9,7 @@ class MetadataTester : public ::testing::Test{
 };
 
 TEST_F(MetadataTester, DummyTest){
-    clairvoyantedge::RedisConnection conn;
+    clairvoyantedge::RedisConnection<sw::redis::Redis> conn;
     std::string resp = "PONG";
     EXPECT_EQ(resp.compare(conn.getConnection()->ping()), 0 );
 }

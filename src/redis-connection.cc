@@ -5,11 +5,13 @@
 
 namespace clairvoyantedge{
 
-RedisConnection::RedisConnection():
+template<typename T>
+RedisConnection<T>::RedisConnection():
     RedisConnection(1, "localhost", 6379, 60000)
 {}
 
-RedisConnection::RedisConnection(const int poolSize, const std::string& host, const int port, const int timeout){
+template<typename T>
+RedisConnection<T>::RedisConnection(const int poolSize, const std::string& host, const int port, const int timeout){
     sw::redis::ConnectionOptions options;
     options.host = host;
     options.port = port;
@@ -17,11 +19,16 @@ RedisConnection::RedisConnection(const int poolSize, const std::string& host, co
     sw::redis::ConnectionPoolOptions poolOptions;
     poolOptions.size = poolSize;
 
-    m_conn_p = std::make_shared<sw::redis::Redis>(sw::redis::Redis(options, poolOptions));
+    m_conn_p = std::make_shared<T>(T(options, poolOptions));
 }
 
-std::shared_ptr<sw::redis::Redis> RedisConnection::getConnection(){
+template<typename T>
+std::shared_ptr<T> RedisConnection<T>::getConnection(){
     return m_conn_p;
 }
+
+template class RedisConnection<sw::redis::Redis>;
+template class RedisConnection<sw::redis::RedisCluster>;
+
 
 }
