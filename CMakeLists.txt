@@ -11,7 +11,9 @@ project(clairvoyantedge-metadata CXX)
 find_package(PkgConfig REQUIRED)
 
 
-add_library(clairvoyantedge-metadata   src/redis-messages.cc)
+add_library(clairvoyantedge-metadata   src/redis-messages.cc 
+                                       src/redis-connection.cc                                        
+)
 
 add_subdirectory(test)
 

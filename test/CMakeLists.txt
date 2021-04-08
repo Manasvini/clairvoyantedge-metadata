@@ -10,7 +10,8 @@ find_package(Threads REQUIRED)
 
 include_directories(../src/)
 
-add_executable(metadata-tester  ../src/redis-messages.cc 
+add_executable(metadata-tester  ../src/redis-messages.cc
+                                ../src/redis-connection.cc 
                                 test.cc
                                 test_main.cc
                 )
@@ -21,4 +22,17 @@ target_link_libraries(metadata-tester  PUBLIC gtest
 
 
 
+find_library(HIREDIS_LIB hiredis)
+target_link_libraries(metadata-tester PUBLIC ${HIREDIS_LIB})
+
+find_path(REDIS_PLUS_PLUS_HEADER sw)
+target_include_directories(metadata-tester PUBLIC ${REDIS_PLUS_PLUS_HEADER})
+
+find_library(REDIS_PLUS_PLUS_LIB redis++)
+target_link_libraries(metadata-tester PUBLIC ${REDIS_PLUS_PLUS_LIB})
+
+
+target_link_libraries(metadata-tester  PUBLIC
+                              ${GCC_FLAGS}
+                              )
 
