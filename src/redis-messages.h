@@ -5,9 +5,19 @@
 
 #include <unordered_map>
 #include <vector>
+#include <unordered_set>
 
 namespace clairvoyantedge{
 
+struct LocationInfo{
+        double lon;
+        double lat;
+        std::string value;
+    };
+    struct LocationInfoResult{
+        LocationInfo info;
+        double distance;
+    };
 
 template <typename T>
 class RedisMessages{
@@ -18,7 +28,7 @@ public:
                                                                 const std::shared_ptr<T>& conn_p);
 
     static void hmset(const std::string& key,
-                      const std::vector<std::pair<std::string, std::string> >& kvps,
+                      const std::unordered_map<std::string, std::string>& kvps,
                       const std::shared_ptr<T>& conn_p);
 
     // string methods
@@ -29,11 +39,11 @@ public:
                     const std::shared_ptr<T>& conn_p);
 
     // set methods
-    static std::vector<std::string> smembers(const std::string& key,
+    static std::unordered_set<std::string> smembers(const std::string& key,
                                              const std::shared_ptr<T>& conn_p);
 
     static void sadd(const std::string& key, 
-                     const std::vector<std::string>& vals,
+                     const std::unordered_set<std::string>& vals,
                      const std::shared_ptr<T>& conn_p);
 
     static void srem(const std::string& key, 
@@ -41,19 +51,11 @@ public:
                      const std::shared_ptr<T>& conn_p);
 
     // geo methods
-    struct LocationInfo{
-        double lon;
-        double lat;
-        std::string value;
-    };
-    struct LocationInfoResult{
-        LocationInfo info;
-        double distance;
-    };
     
     static std::vector<LocationInfoResult> georadius(const std::string& key, 
                                                      const double lon, const double lat,
                                                      const double radius,
+                                                     const int maxItems,
                                                      const std::shared_ptr<T>& conn_p);
 
     static void geoadd(const std::string& key, 
