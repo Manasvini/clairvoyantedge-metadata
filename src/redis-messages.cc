@@ -88,7 +88,15 @@ void RedisMessages<T>::geoadd(const std::string& key,
     conn_p->geoadd(key, items.begin(), items.end());
 }
 
- 
+template<typename T>
+bool RedisMessages<T>::exists(const std::string& key, const std::shared_ptr<T>& conn_p){
+    return conn_p->exists(key) == 1;
+}
+
+template<typename T>
+void RedisMessages<T>::del(const std::string& key, const std::shared_ptr<T>& conn_p){
+    conn_p->del(key);
+}
 
 template class RedisMessages<sw::redis::Redis>;
 template class RedisMessages<sw::redis::RedisCluster>;

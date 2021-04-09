@@ -62,7 +62,12 @@ public:
                        const std::vector<LocationInfo>& info,
                        const std::shared_ptr<T>& conn_p);
 
-    
+
+    // exists
+    static bool exists(const std::string& key, const std::shared_ptr<T>& conn_p);    
+
+    // delete
+    static void del(const std::string& key, const std::shared_ptr<T>& conn_p);
 };
 
 }
