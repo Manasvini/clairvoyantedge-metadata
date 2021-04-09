@@ -62,6 +62,13 @@ public:
                        const std::vector<LocationInfo>& info,
                        const std::shared_ptr<T>& conn_p);
 
+    // list methods
+    static void lpush(const std::string& key, 
+                      const std::vector<std::string>& vals,
+                      const std::shared_ptr<T>& conn_p);
+
+    static std::vector<std::string> lrange(const std::string& key,
+                                           const std::shared_ptr<T>& conn_p);
 
     // exists
     static bool exists(const std::string& key, const std::shared_ptr<T>& conn_p);    

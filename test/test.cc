@@ -259,4 +259,25 @@ TEST_F(MetadataTester, GeoDelinvalidKeyTest){
     EXPECT_FALSE(RedisMessages<sw::redis::Redis>::exists(key, m_conn_p));
 
 }
+
+TEST_F(MetadataTester, ListAddTest){
+    std::string key = "testlist";
+    std::vector<std::string> vals;
+    vals.push_back("one");
+    vals.push_back("one");
+    RedisMessages<sw::redis::Redis>::lpush(key, vals, m_conn_p);
+    EXPECT_EQ(RedisMessages<sw::redis::Redis>::lrange(key, m_conn_p).size(), 2);
+}
+
+TEST_F(MetadataTester, ListDelTest){
+    std::string key = "testlist";
+    std::vector<std::string> vals;
+    vals.push_back("one");
+    vals.push_back("one");
+    RedisMessages<sw::redis::Redis>::lpush(key, vals, m_conn_p);
+    EXPECT_TRUE(RedisMessages<sw::redis::Redis>::exists(key, m_conn_p));
+    RedisMessages<sw::redis::Redis>::del(key, m_conn_p);
+    EXPECT_FALSE(RedisMessages<sw::redis::Redis>::exists(key, m_conn_p));
+}
+
 }

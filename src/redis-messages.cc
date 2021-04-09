@@ -98,6 +98,21 @@ void RedisMessages<T>::del(const std::string& key, const std::shared_ptr<T>& con
     conn_p->del(key);
 }
 
+template<typename T>
+void RedisMessages<T>::lpush(const std::string& key, 
+                             const std::vector<std::string>& vals,
+                             const std::shared_ptr<T>& conn_p){
+    conn_p->lpush(key, vals.begin(), vals.end());
+}
+
+template<typename T>
+std::vector<std::string> RedisMessages<T>::lrange(const std::string& key,
+                                const std::shared_ptr<T>& conn_p){
+    std::vector<std::string> vals;
+    conn_p->lrange(key, 0, -1, std::back_inserter(vals));
+    return vals;
+}
+
 template class RedisMessages<sw::redis::Redis>;
 template class RedisMessages<sw::redis::RedisCluster>;
 
