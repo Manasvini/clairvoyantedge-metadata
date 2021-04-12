@@ -13,6 +13,7 @@ include_directories(../src/)
 add_executable(metadata-tester  ../src/redis-messages.cc
                                 ../src/redis-connection.cc 
                                 test.cc
+                                test_cluster.cc
                                 test_main.cc
                 )
 
