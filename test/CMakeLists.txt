@@ -12,9 +12,12 @@ include_directories(../src/)
 
 add_executable(metadata-tester  ../src/redis-messages.cc
                                 ../src/redis-connection.cc 
-                                test.cc
+                                #test.cc
                                 test_cluster.cc
                                 test_main.cc
+                                metadata-client-test.cc
+                                ../clairvoyantedge.pb.cc
+                                ../clairvoyantedge.grpc.pb.cc                                                                
                 )
 
 set(GCC_FLAGS "-lpthread -lgtest")
@@ -35,5 +38,8 @@ target_link_libraries(metadata-tester PUBLIC ${REDIS_PLUS_PLUS_LIB})
 
 target_link_libraries(metadata-tester  PUBLIC
                               ${GCC_FLAGS}
-                              )
+                              protobuf::libprotobuf
+                              grpc++_reflection
+                              gRPC::grpc++     
+                        )
 

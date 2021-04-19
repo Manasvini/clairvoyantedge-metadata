@@ -80,7 +80,7 @@ message DeleteRouteRequest{
 }
 
 service MetadataServer {
-    rpc getVideoRequest (GetVideoInfoRequest) returns (GetVideoInfoResponse) {}
+    rpc getVideoInfo (GetVideoInfoRequest) returns (GetVideoInfoResponse) {}
     rpc getNearestNodes (GetNearestNodesRequest) returns (GetNearestNodesResponse) {}
     rpc updateSegmentInfo (UpdateSegmentInfoRequest) returns (StatusResponse) {}
     rpc addVideoInfo (AddVideoInfoRequest) returns (StatusResponse) {}

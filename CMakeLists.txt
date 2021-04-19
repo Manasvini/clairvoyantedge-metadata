@@ -7,7 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(clairvoyantedge-metadata CXX)
 
-
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -frtti")
 find_package(PkgConfig REQUIRED)
 set(protobuf_MODULE_COMPATIBLE TRUE)
 find_package(Protobuf CONFIG REQUIRED)
@@ -51,9 +51,13 @@ add_custom_command(
                  DEPENDS "${clairvoyantedge_proto}")
 
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
-add_library(clairvoyantedge-metadata   src/redis-messages.cc 
+add_executable(clairvoyantedge-metadata   src/redis-messages.cc 
                                        src/redis-connection.cc
                                        "${clairvoyantedge_proto_srcs}"
+                                      "${clairvoyantedge_grpc_srcs}"
+                                       src/metadata-server-impl.h
+                                       src/metadata-server-impl.cc
+                                       src/main.cc
 )
 
 add_subdirectory(test)
@@ -74,4 +78,7 @@ target_link_libraries(clairvoyantedge-metadata PUBLIC ${REDIS_PLUS_PLUS_LIB})
 set(GCC_FLAGS "-pthread -lstdc++fs")
 target_link_libraries(clairvoyantedge-metadata  PUBLIC
                               ${GCC_FLAGS}
-                              )
+                              ${_REFLECTION}
+                              ${_GRPC_GRPCPP}
+                              ${_PROTOBUF_LIBPROTOBUF}
+                     )
