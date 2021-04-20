@@ -79,10 +79,24 @@ message DeleteRouteRequest{
     string routeId = 1;
 }
 
+message Request {
+    oneof request {
+        GetVideoInfoRequest getVideoInfoRequest = 1;
+        GetNearestNodesRequest getNearestNodesRequest = 2;
+        UpdateSegmentInfoRequest updateSegmentInfoRequest = 3;
+        AddVideoInfoRequest addVideoInfoRequest = 4;
+        AddNodeToRouteRequest addNodeToRoute =  5;
+    }
+}
+
+message Response {
+    oneof response{
+        GetVideoInfoResponse getVideoInfoResponse = 1;
+        GetNearestNodesResponse getNearestNodesResponse = 2;
+        StatusResponse statusResponse = 3;
+    }
+}
+
 service MetadataServer {
-    rpc getVideoInfo (GetVideoInfoRequest) returns (GetVideoInfoResponse) {}
-    rpc getNearestNodes (GetNearestNodesRequest) returns (GetNearestNodesResponse) {}
-    rpc updateSegmentInfo (UpdateSegmentInfoRequest) returns (StatusResponse) {}
-    rpc addVideoInfo (AddVideoInfoRequest) returns (StatusResponse) {}
-    rpc addNodeToRoute (AddNodeToRouteRequest) returns (StatusResponse) {}
+    rpc handleRequest (Request) returns (Response) {}
 }

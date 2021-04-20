@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # Project
 
+include(FindPkgConfig)
+
 project(clairvoyantedge-metadata CXX)
 
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -frtti")
@@ -58,6 +60,7 @@ add_executable(clairvoyantedge-metadata   src/redis-messages.cc
                                        src/metadata-server-impl.h
                                        src/metadata-server-impl.cc
                                        src/main.cc
+                                       src/metadata-task.cc
 )
 
 add_subdirectory(test)
@@ -81,4 +84,7 @@ target_link_libraries(clairvoyantedge-metadata  PUBLIC
                               ${_REFLECTION}
                               ${_GRPC_GRPCPP}
                               ${_PROTOBUF_LIBPROTOBUF}
+                              unagi
+                              hummus
+                              yaml-cpp
                      )
