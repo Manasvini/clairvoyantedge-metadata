@@ -141,4 +141,32 @@ TEST_F(MetadataTestClient, SegmentDelTest){
     EXPECT_TRUE(status.ok());
     EXPECT_FALSE(RedisMessages<sw::redis::RedisCluster>::exists("11", m_conn_p));
 }
+TEST_F(MetadataTestClient, NearestNodesTest){
+    Request request;
+    GetNearestNodesRequest* nnReq = request.mutable_getnearestnodesrequest();
+    Position* p = nnReq->add_positions();
+    p->set_latitude(0);
+    p->set_longitude(0);
+ 
+    std::vector<LocationInfo> infos;
+    LocationInfo info;
+    info.lat = 0;
+    info.lon = 0;
+    info.value = "node1";
+    infos.push_back(info);
+    RedisMessages<sw::redis::RedisCluster>::geoadd("nodes", infos, m_conn_p);
+    Response response;
+    grpc::ClientContext context;
+    grpc::Status status;
+    grpc::CompletionQueue cq;
+    std::unique_ptr<grpc::ClientAsyncResponseReader<Response>> rpc(m_stub_p->PrepareAsynchandleRequest(&context, request, &cq));
+    rpc->StartCall();
+    rpc->Finish(&response, &status, (void*)1);
+    void *got_tag;
+    bool ok = false;
+    GPR_ASSERT(cq.Next(&got_tag, &ok));
+    GPR_ASSERT(got_tag == (void*)1);
+    GPR_ASSERT(ok); 
+    EXPECT_TRUE(response.getnearestnodesresponse().nodes_size() > 0);    
+}
 }

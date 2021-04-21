@@ -23,7 +23,7 @@ private:
 
     grpc::Status getNearestNodes( 
                            const GetNearestNodesRequest* request,
-                           GetNearestNodesResponse* response);
+                           Response* response);
     
     grpc::Status updateSegmentInfo(
                            const UpdateSegmentInfoRequest* request,

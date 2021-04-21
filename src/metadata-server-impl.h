@@ -27,7 +27,7 @@ class MetadataServerImpl{
 public:
     MetadataServerImpl(const std::string& serverAddress):
         m_connWrapper(1, "127.0.0.1", 7000, 60000),
-        m_threadpool(1, 100){
+        m_threadpool(10, 100){
         m_conn_p = m_connWrapper.getConnection();
         m_threadpool.start();
         

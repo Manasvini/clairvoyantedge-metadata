@@ -32,6 +32,10 @@ void MetadataTask::execute(){
         std::cout <<"\n got update segment req";
         updateSegmentInfo(&m_request_p->updatesegmentinforequest(), m_response_p);
     }
+    else if(m_request_p->has_getnearestnodesrequest()){
+        std::cout<< "\nget nn req";
+        getNearestNodes(&m_request_p->getnearestnodesrequest(), m_response_p);
+    }
     if(!m_response_p){
         std::cout << "boom2";
     }
@@ -76,7 +80,28 @@ grpc::Status MetadataTask::getVideoInfo(
 }
 grpc::Status MetadataTask::getNearestNodes(
                                               const GetNearestNodesRequest* request,
-                                              GetNearestNodesResponse* response){
+                                              Response* response){
+    double radius = 1.0;
+    int maxItems = 1;
+    const std::string key = "nodes";
+    GetNearestNodesResponse *nnResp = response->mutable_getnearestnodesresponse();
+    for(int i = 0; i < request->positions_size(); ++i){
+        double lat = request->positions(i).latitude();
+        double lon = request->positions(i).longitude();
+        std::vector<LocationInfoResult> results = RedisMessages<sw::redis::RedisCluster>::georadius(key,
+                                                                                                  lon,
+                                                                                                  lat,
+                                                                                                  radius,
+                                                                                                  maxItems,
+                                                                                                  m_conn_p);
+        if(results.size() > 0){
+            NodeInfo* info = nnResp->add_nodes();
+            Position *p = info->mutable_position();
+            p->set_latitude(results[0].info.lat);
+            p->set_longitude(results[0].info.lon);
+            info->set_nodeid(results[0].info.value);
+        }
+    }
     return grpc::Status::OK;
 }
 
