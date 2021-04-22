@@ -18,7 +18,7 @@ MetadataTask::MetadataTask(grpc::ServerAsyncResponseWriter<Response>* responder,
 void MetadataTask::execute(){
     std::cout << "running task";
     if(!m_request_p || !m_responder_p){
-        std::cout << "\nboom";
+        std::cout << "\n NULL";
     }
     if(m_request_p->has_getvideoinforequest()){
         std::cout<<"\n got get video task";
@@ -36,8 +36,14 @@ void MetadataTask::execute(){
         std::cout<< "\nget nn req";
         getNearestNodes(&m_request_p->getnearestnodesrequest(), m_response_p);
     }
+    else if(m_request_p->has_addrouterequest()){
+        addRoute(&m_request_p->addrouterequest(), m_response_p);
+    }
+    else if(m_request_p->has_deleterouterequest()){
+        deleteRoute(&m_request_p->deleterouterequest(), m_response_p);
+    }
     if(!m_response_p){
-        std::cout << "boom2";
+        std::cout << "failed";
     }
     m_responder_p->Finish(*m_response_p, grpc::Status::OK, m_tag);
     std::cout << "done\n";
@@ -146,10 +152,33 @@ grpc::Status MetadataTask::addVideoInfo(
     return grpc::Status::OK;
 }
 
-grpc::Status MetadataTask::addNodeToRoute( 
-                                              const AddNodeToRouteRequest* request,
-                                              StatusResponse* response){
+grpc::Status MetadataTask::addRoute( 
+                                              const AddRouteRequest* request,
+                                              Response* response){
+    RedisMessages<sw::redis::RedisCluster>::set(request->routeid(),"ADDED",  m_conn_p);
+    StatusResponse* status = response->mutable_statusresponse();
+    status->add_statuses("OK");
     return grpc::Status::OK;
 }
+
+grpc::Status MetadataTask::deleteRoute( 
+                                              const DeleteRouteRequest* request,
+                                              Response* response){
+    RedisMessages<sw::redis::RedisCluster>::del(request->routeid(), m_conn_p);
+    StatusResponse* status = response->mutable_statusresponse();
+    status->add_statuses("OK");
+    return grpc::Status::OK;
+}
+
+grpc::Status MetadataTask::existsRoute( 
+                                              const ExistsRouteRequest* request,
+                                              Response* response){
+    bool exists = RedisMessages<sw::redis::RedisCluster>::exists(request->routeid(), m_conn_p);
+    StatusResponse* status = response->mutable_statusresponse();
+    std::string existsStr = exists ? "TRUE" :"FALSE";
+    status->add_statuses(existsStr);
+    return grpc::Status::OK;
+}
+
 
 }

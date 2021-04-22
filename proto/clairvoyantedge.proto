@@ -69,13 +69,15 @@ message AddVideoInfoRequest{
     repeated Video videos = 1;
 }
 
-message AddNodeToRouteRequest{
+message AddRouteRequest{
     string routeId = 1;
-    string nodeId = 2;
-    repeated string segments = 3;
 }
 
 message DeleteRouteRequest{
+    string routeId = 1;
+}
+
+message ExistsRouteRequest {
     string routeId = 1;
 }
 
@@ -85,7 +87,9 @@ message Request {
         GetNearestNodesRequest getNearestNodesRequest = 2;
         UpdateSegmentInfoRequest updateSegmentInfoRequest = 3;
         AddVideoInfoRequest addVideoInfoRequest = 4;
-        AddNodeToRouteRequest addNodeToRoute =  5;
+        AddRouteRequest addRouteRequest = 5;
+        DeleteRouteRequest deleteRouteRequest = 6;
+        ExistsRouteRequest existsRouteRequest = 7;
     }
 }
 

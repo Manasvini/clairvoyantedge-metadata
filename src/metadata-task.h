@@ -33,9 +33,18 @@ private:
                            const AddVideoInfoRequest* request,
                            Response* response);
     
-    grpc::Status addNodeToRoute( 
-                           const AddNodeToRouteRequest* request,
-                           StatusResponse* response);
+    grpc::Status addRoute( 
+                           const AddRouteRequest* request,
+                           Response* response);
+
+    grpc::Status deleteRoute( 
+                           const DeleteRouteRequest* request,
+                           Response* response);
+
+    grpc::Status existsRoute( 
+                           const ExistsRouteRequest* request,
+                           Response* response);
+
 
     const Request* m_request_p;
     Response* m_response_p;
