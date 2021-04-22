@@ -16,8 +16,6 @@ add_executable(metadata-tester  ../src/redis-messages.cc
                                 test_cluster.cc
                                 test_main.cc
                                 metadata-client-test.cc
-                                ${CMAKE_CURRENT_BINARY_DIR}/../clairvoyantedge.pb.cc
-                                ${CMAKE_CURRENT_BINARY_DIR}}/../clairvoyantedge.grpc.pb.cc                                                                
                 )
 message("My test's working directory: ${CMAKE_CURRENT_BINARY_DIR}")
 set(GCC_FLAGS "-lpthread -lgtest")
@@ -36,9 +34,7 @@ target_link_libraries(metadata-tester PUBLIC ${REDIS_PLUS_PLUS_LIB})
 
 target_link_libraries(metadata-tester  PUBLIC
                               ${GCC_FLAGS}
-                              protobuf::libprotobuf
-                              grpc++_reflection
-                              gRPC::grpc++     
-                              gtest    
+                              gtest 
+                              clairvoyantedge-protos   
                     )
 
