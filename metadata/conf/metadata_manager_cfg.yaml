@@ -1,0 +1,9 @@
+maxThreads: 25
+maxQueue: 10000
+queryBatchSize: 400
+redisConfig:
+    maxConnections: 25
+    port: 7000
+    serverAddr: "127.0.0.1"
+    timeout: 60000
+
