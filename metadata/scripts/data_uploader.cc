@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
         *segment = seg;
     }
     clairvoyantmeta::Response response;
-
+    std::cout << "vid id = " << video->videoid() << "\n";
     grpc::ClientContext context;
     grpc::Status status;
     grpc::CompletionQueue cq;
