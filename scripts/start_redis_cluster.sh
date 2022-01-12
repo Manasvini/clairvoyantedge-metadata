@@ -28,7 +28,7 @@ do
     echo "appendonly yes" >> redis.conf
     redis-server redis.conf --daemonize yes
     echo "executing redis-cli -p $port_num FLUSHALL" 
-    redis-cli -p $port_num FLUSHALL
+    redis-cli -p $port_num FLUSHDB
     cd $workdir
     addresses="$addresses $address$charcolon$port_num "
 done
