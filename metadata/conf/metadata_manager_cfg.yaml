@@ -1,8 +1,8 @@
-maxThreads: 25
+maxThreads: 4
 maxQueue: 10000
 queryBatchSize: 400
 redisConfig:
-    maxConnections: 25
+    maxConnections: 4
     port: 7000
     serverAddr: "127.0.0.1"
     timeout: 60000
